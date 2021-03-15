@@ -1,0 +1,13 @@
+package blorb;
+
+import java.util.Random;
+
+@javax.jws.WebService
+public interface eshopIfce {
+	
+	private Random r;
+	
+	@javax.jws.WebMethod
+	public boolean orderYoghurt(int count);
+	
+}

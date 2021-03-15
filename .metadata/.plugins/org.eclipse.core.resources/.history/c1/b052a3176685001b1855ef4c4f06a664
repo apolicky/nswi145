@@ -1,0 +1,14 @@
+package blorb;
+
+import javafx.util.Pair;
+
+@javax.jws.WebService
+public class paywallIfce {
+
+	@javax.jws.WebMethod
+	public Pair pay(int amount) {
+		
+		return new Pair<>(true, 69);
+	}
+	
+}

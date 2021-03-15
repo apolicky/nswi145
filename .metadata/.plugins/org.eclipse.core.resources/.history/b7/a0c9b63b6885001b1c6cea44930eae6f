@@ -1,0 +1,8 @@
+package blorb;
+
+@javax.jws.WebService
+public interface interfejs {
+	
+	@javax.jws.WebMethod
+	public double f2c(double celsius);
+}

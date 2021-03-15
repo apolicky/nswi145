@@ -1,0 +1,13 @@
+package blorb;
+
+import java.util.Random;
+
+import javax.jws.WebService;
+
+@WebService(endpointInterface = "blorb.eshopIfce")
+public class eshopImpl implements eshopIfce {
+	
+	public boolean orderYoghurt(int count) {
+		return true; // this.r.nextBoolean();
+	}
+}

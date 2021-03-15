@@ -1,0 +1,12 @@
+package blorb;
+
+@javax.jws.WebService
+public class paywallIfce {
+
+	@javax.jws.WebMethod
+	public Pair<Boolean,Int> pay(Int Amount) {
+		
+		return Pair<True, 69>;
+	}
+	
+}

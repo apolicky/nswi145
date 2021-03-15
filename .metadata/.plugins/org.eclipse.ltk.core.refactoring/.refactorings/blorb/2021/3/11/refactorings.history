@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring accessors="true" comment="Delete 3 elements from project &apos;blorb&apos;&#x0A;- Original project: &apos;blorb&apos;&#x0A;- Original elements:&#x0A;     blorb.IImpl.java&#x0A;     blorb.interfejs.java&#x0A;     blorb.order.java" description="Delete elements" element1="/src\/test\/java=/optional=/true=/=/maven.pomderived=/true=/=/test=/true=/&lt;blorb{IImpl.java" element2="/src\/test\/java=/optional=/true=/=/maven.pomderived=/true=/=/test=/true=/&lt;blorb{interfejs.java" element3="/src\/test\/java=/optional=/true=/=/maven.pomderived=/true=/=/test=/true=/&lt;blorb{order.java" elements="3" flags="589830" id="org.eclipse.jdt.ui.delete" resources="0" stamp="1615796829023" subPackages="false" version="1.0"/>
+</session>

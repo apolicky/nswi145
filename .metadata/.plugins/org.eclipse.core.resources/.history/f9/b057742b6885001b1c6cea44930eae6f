@@ -1,0 +1,17 @@
+package blorb;
+
+import javax.jws.WebService;
+
+@WebService(endpointInterface = "blorb.paywallIfce")
+public class paywallImpl implements paywallIfce{
+	
+	public int pay(int account_balance, int amount) {
+		if (account_balance >= amount) {
+			return account_balance - amount;
+		}
+		else {
+			return -1;
+		}
+	}
+	
+}
