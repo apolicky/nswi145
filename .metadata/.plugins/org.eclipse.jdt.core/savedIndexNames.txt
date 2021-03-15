@@ -1,4 +1,0 @@
-INDEX VERSION 1.131+/home/adam/school/nswi145/.metadata/.plugins/org.eclipse.jdt.core
-671411659.index
-3386280607.index
-1031031000.index

@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<qualifiedTypeNameHistroy>
-    <fullyQualifiedTypeName name="javax.xml.ws.Endpoint"/>
-    <fullyQualifiedTypeName name="javax.jws.WebResult"/>
-    <fullyQualifiedTypeName name="blorb.eshopIfce.order"/>
-    <fullyQualifiedTypeName name="java.util.Random"/>
-    <fullyQualifiedTypeName name="javax.jws.WebMethod"/>
-    <fullyQualifiedTypeName name="javax.jws.WebService"/>
-</qualifiedTypeNameHistroy>
