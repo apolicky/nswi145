@@ -332,3 +332,21 @@
 2021-03-15 09:27:09,362 [Worker-13: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
 2021-03-15 09:27:09,368 [Worker-13: Building] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
 2021-03-15 09:27:09,371 [Worker-13: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2021-03-15 09:38:29,500 [Worker-14: Creating project "jax-ws-tutorial"] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: blorb2:jax-ws-tutorial:0.0.1-SNAPSHOT @ /home/adam/school/nswi145/jax-ws-tutorial/pom.xml.
+2021-03-15 09:38:29,875 [Worker-14: Creating project "jax-ws-tutorial"] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /jax-ws-tutorial/src/main/java
+2021-03-15 09:38:29,875 [Worker-14: Creating project "jax-ws-tutorial"] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /jax-ws-tutorial/src/main/resources
+2021-03-15 09:38:29,877 [Worker-14: Creating project "jax-ws-tutorial"] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /jax-ws-tutorial/src/test/java
+2021-03-15 09:38:29,877 [Worker-14: Creating project "jax-ws-tutorial"] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /jax-ws-tutorial/src/test/resources
+2021-03-15 09:38:30,491 [Worker-22: Building] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2021-03-15 09:38:30,495 [Worker-22: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2021-03-15 09:38:30,498 [Worker-22: Building] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2021-03-15 09:38:30,499 [Worker-22: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2021-03-15 09:41:43,909 [Worker-22: Creating project "lab-02"] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: a:lab-02:0.0.1-SNAPSHOT @ /home/adam/school/nswi145/lab-02/pom.xml.
+2021-03-15 09:41:44,023 [Worker-22: Creating project "lab-02"] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /lab-02/src/main/java
+2021-03-15 09:41:44,023 [Worker-22: Creating project "lab-02"] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /lab-02/src/main/resources
+2021-03-15 09:41:44,023 [Worker-22: Creating project "lab-02"] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /lab-02/src/test/java
+2021-03-15 09:41:44,024 [Worker-22: Creating project "lab-02"] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /lab-02/src/test/resources
+2021-03-15 09:41:44,389 [Worker-24: Building] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2021-03-15 09:41:44,392 [Worker-24: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2021-03-15 09:41:44,397 [Worker-24: Building] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2021-03-15 09:41:44,402 [Worker-24: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource

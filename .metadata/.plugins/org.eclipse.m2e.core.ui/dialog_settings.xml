@@ -2,8 +2,10 @@
 <section name="Workbench">
 	<section name="MavenProjectWizardLocationPage">
 		<list key="location">
-			<item value="/home/adam/school/nswi145"/>
+			<item value="/home/adam/school/nswi145/lab-02"/>
 			<item value="/home/adam/school/nswi145/lab02"/>
+			<item value="/home/adam/school/nswi145/blorb"/>
+			<item value="/home/adam/school/nswi145"/>
 		</list>
 		<list key="projectNameTemplate">
 			<item value="[artifactId]"/>
@@ -46,12 +48,10 @@
 	</section>
 	<section name="MavenProjectWizardArtifactPage">
 		<list key="groupId">
-			<item value="69"/>
 		</list>
 		<list key="name">
 		</list>
 		<list key="artifactId">
-			<item value="blorb"/>
 		</list>
 		<list key="projectNameTemplate">
 			<item value="[artifactId]"/>
