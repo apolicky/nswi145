@@ -1,0 +1,172 @@
+<definitions targetNamespace="http://yoghurt/" name="eshopImplService"
+    xmlns="http://schemas.xmlsoap.org/wsdl/"
+    xmlns:tns="http://yoghurt/"
+    xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata"
+    xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+    <types>
+        <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+            <xsd:import namespace="http://yoghurt/" schemaLocation="http://localhost/start/schema.xml"/>
+        </xsd:schema>
+    </types>
+<!-- ESHOP INTERFACE MESSAGES                 -->
+    <message name="addYoghurt">
+        <part name="parameters" element="tns:addYoghurt"/>
+    </message>
+    <message name="addYoghurtResponse">
+        <part name="parameters" element="tns:addYoghurtResponse"/>
+    </message>
+    <message name="totalAmount">
+        <part name="parameters" element="tns:totalAmount"/>
+    </message>
+    <message name="totalAmountResponse">
+        <part name="parameters" element="tns:totalAmountResponse"/>
+    </message>
+    <message name="cancelOrder">
+        <part name="parameters" element="tns:cancelOrder"/>
+    </message>
+    <message name="cancelOrderResponse">
+        <part name="parameters" element="tns:cancelOrderResponse"/>
+    </message>
+<!-- PAYWALL INTERFACE MESSAGES               -->
+    <message name="pay">
+        <part name="parameters" element="tns:pay"/>
+    </message>
+    <message name="payResponse">
+        <part name="parameters" element="tns:payResponse"/>
+    </message>
+    <message name="getReciept">
+        <part name="parameters" element="tns:getReciept"/>
+    </message>
+    <message name="getRecieptResponse">
+        <part name="parameters" element="tns:getRecieptResponse"/>
+    </message>
+    <message name="fillCredentials">
+        <part name="parameters" element="tns:fillCredentials"/>
+    </message>
+    <message name="fillCredentialsResponse">
+        <part name="parameters" element="tns:fillCredentialsResponse"/>
+    </message>
+
+<!-- PORTS  -->
+
+<!-- ESHOP PORT -->
+
+    <portType name="eshopIfce">
+        <operation name="addYoghurt">
+            <input wsam:Action="http://yoghurt/eshopIfce/addYoghurtRequest" message="tns:addYoghurt"/>
+            <output wsam:Action="http://yoghurt/eshopIfce/addYoghurtResponse" message="tns:addYoghurtResponse"/>
+        </operation>
+        <operation name="totalAmount">
+            <input wsam:Action="http://yoghurt/eshopIfce/totalAmountRequest" message="tns:totalAmount"/>
+            <output wsam:Action="http://yoghurt/eshopIfce/totalAmountResponse" message="tns:totalAmountResponse"/>
+        </operation>
+        <operation name="cancelOrder">
+            <input wsam:Action="http://yoghurt/eshopIfce/cancelOrderRequest" message="tns:cancelOrder"/>
+            <output wsam:Action="http://yoghurt/eshopIfce/cancelOrderResponse" message="tns:cancelOrderResponse"/>
+        </operation>
+    </portType>
+
+
+<!-- PAYWALL PORT -->
+
+    <portType name="paywallIfce">
+        <operation name="pay">
+            <input wsam:Action="http://yoghurt/paywallIfce/payRequest" message="tns:pay"/>
+            <output wsam:Action="http://yoghurt/paywallIfce/payResponse" message="tns:payResponse"/>
+        </operation>
+        <operation name="getReciept">
+            <input wsam:Action="http://yoghurt/paywallIfce/getRecieptRequest" message="tns:getReciept"/>
+            <output wsam:Action="http://yoghurt/paywallIfce/getRecieptResponse" message="tns:getRecieptResponse"/>
+        </operation>
+        <operation name="fillCredentials">
+            <input wsam:Action="http://yoghurt/paywallIfce/fillCredentialsRequest" message="tns:fillCredentials"/>
+            <output wsam:Action="http://yoghurt/paywallIfce/fillCredentialsResponse" message="tns:fillCredentialsResponse"/>
+        </operation>
+    </portType>
+
+    <!-- BINDINGS -->
+
+    <!-- ESHOP BINDING -->
+
+    <binding name="eshopImplPortBinding" type="tns:eshopIfce">
+        <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
+        <operation name="addYoghurt">
+            <soap:operation soapAction=""/>
+            <input>
+                <soap:body use="literal"/>
+            </input>
+            <output>
+                <soap:body use="literal"/>
+            </output>
+        </operation>
+        <operation name="totalAmount">
+            <soap:operation soapAction=""/>
+            <input>
+                <soap:body use="literal"/>
+            </input>
+            <output>
+                <soap:body use="literal"/>
+            </output>
+        </operation>
+        <operation name="cancelOrder">
+            <soap:operation soapAction=""/>
+            <input>
+                <soap:body use="literal"/>
+            </input>
+            <output>
+                <soap:body use="literal"/>
+            </output>
+        </operation>
+    </binding>
+
+    <!-- PAYWALL BINDING -->
+
+    <binding name="paywallImplPortBinding" type="tns:paywallIfce">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
+        <operation name="pay">
+            <soap:operation soapAction=""/>
+            <input>
+                <soap:body use="literal"/>
+            </input>
+            <output>
+                <soap:body use="literal"/>
+            </output>
+        </operation>
+        <operation name="getReciept">
+            <soap:operation soapAction=""/>
+            <input>
+                <soap:body use="literal"/>
+            </input>
+            <output>
+                <soap:body use="literal"/>
+            </output>
+        </operation>
+        <operation name="fillCredentials">
+            <soap:operation soapAction=""/>
+            <input>
+                <soap:body use="literal"/>
+            </input>
+            <output>
+                <soap:body use="literal"/>
+            </output>
+        </operation>
+    </binding>
+
+    <!-- SERVICES -->
+
+    <!-- ESHOP SERVICE -->
+
+    <service name="eshopImplService">
+        <port name="eshopImplPort" binding="tns:eshopImplPortBinding">
+            <soap:address location="http://localhost:8000/eshopIfce"/>
+        </port>
+    </service>
+
+    <!-- PAYWALL SERVICE -->
+
+    <service name="paywallImplService">
+        <port name="paywallImplPort" binding="tns:paywallImplPortBinding">
+            <soap:address location="http://localhost:8001/paywallIfce"/>
+        </port>
+    </service>
+</definitions>

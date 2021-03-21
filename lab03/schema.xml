@@ -1,0 +1,90 @@
+<xs:schema version="1.0" targetNamespace="http://yoghurt/"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:tns="http://yoghurt/">
+
+    <!-- ELEMENT DECLARATION -->
+
+    <!-- ESHOP -->
+
+    <xs:element name="addYoghurt" type="tns:addYoghurt"/>
+    <xs:element name="addYoghurtResponse" type="tns:addYoghurtResponse"/>
+    <xs:element name="cancelOrder" type="tns:cancelOrder"/>
+    <xs:element name="cancelOrderResponse" type="tns:cancelOrderResponse"/>
+    <xs:element name="totalAmount" type="tns:totalAmount"/>
+    <xs:element name="totalAmountResponse" type="tns:totalAmountResponse"/>
+
+    <!-- PAYWALL -->
+
+    <xs:element name="fillCredentials" type="tns:fillCredentials"/>
+    <xs:element name="fillCredentialsResponse" type="tns:fillCredentialsResponse"/>
+    <xs:element name="getReciept" type="tns:getReciept"/>
+    <xs:element name="getRecieptResponse" type="tns:getRecieptResponse"/>
+    <xs:element name="pay" type="tns:pay"/>
+    <xs:element name="payResponse" type="tns:payResponse"/>
+
+    <!-- ELEMENT DEFINITIONS -->
+
+    <!-- ESHOP -->
+
+    <xs:complexType name="addYoghurt">
+        <xs:sequence>
+            <xs:element name="count" type="xs:int"/>
+            <xs:element name="flavor_id" type="xs:int"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="addYoghurtResponse">
+        <xs:sequence>
+        <xs:element name="add_success" type="xs:boolean"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="cancelOrder">
+        <xs:sequence/>
+    </xs:complexType>
+    <xs:complexType name="cancelOrderResponse">
+        <xs:sequence>
+        <xs:element name="cancel_success" type="xs:boolean"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="totalAmount">
+        <xs:sequence>
+        <xs:element name="yoghurt_count" type="xs:int"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="totalAmountResponse">
+        <xs:sequence>
+        <xs:element name="total_amount" type="xs:int"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <!-- PAYWALL -->
+
+    <xs:complexType name="pay">
+        <xs:sequence>
+            <xs:element name="account_balance" type="xs:int"/>
+            <xs:element name="amount" type="xs:int"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="payResponse">
+        <xs:sequence>
+            <xs:element name="new_balance_OR_failed_payment" type="xs:int"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="getReciept">
+        <xs:sequence/>
+    </xs:complexType>
+    <xs:complexType name="getRecieptResponse">
+        <xs:sequence>
+            <xs:element name="reciept_pdf" type="xs:string" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="fillCredentials">
+        <xs:sequence>
+            <xs:element name="card_owner" type="xs:string" minOccurs="0"/>
+            <xs:element name="card_id" type="xs:int"/>
+            <xs:element name="expir_date" type="xs:int"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="fillCredentialsResponse">
+        <xs:sequence/>
+    </xs:complexType>
+</xs:schema>

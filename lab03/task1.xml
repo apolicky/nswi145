@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+targetNamespace="http://tempuri.org/">
+    <xs:element name="AddRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="intA" type="xs:int" minOccurs="1" maxOccurs="1"/>
+                <xs:element name="intB" type="xs:int" minOccurs="1" maxOccurs="1"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="AddResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="intRes" type="xs:int" minOccurs="1" maxOccurs="1"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+</xs:schema>
