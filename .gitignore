@@ -1,2 +1,7 @@
 /.metadata/
 .*
+/Servers/
+*/target/*
+*/test/*
+*/WebContent/*
+*/build/*
