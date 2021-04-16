@@ -59,6 +59,8 @@ public final class EshopInterface_EshopImplPort_Client {
         EshopImplService ss = new EshopImplService(wsdlURL, SERVICE_NAME);
         EshopInterface port = ss.getEshopImplPort();
         
+//        http://cxf.apache.org/docs/ws-security.html#WS-Security-UsernameTokenAuthentication
+        
         Endpoint cxfEndpoint = ClientProxy.getClient(port).getEndpoint();
         
         Map<String,Object> outProps = new HashMap<String,Object>();
