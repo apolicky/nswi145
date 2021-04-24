@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:tns="http://apolicky/nswi145/hw7/wsdl" 
+   xmlns:tnsxsd="http://apolicky/nswi145/hw7/xsd" 
+   xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" 
+   xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+   xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" 
+   xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype" 
+   xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" 
+
+    xmlns:eshop="http://lab2/"
+    xmlns:paywall="http://lab2/"
+
+   targetNamespace="http://apolicky/nswi145/hw7/wsdl">
+
+    <wsdl:import location="eshop.wsdl" namespace="http://lab02/"/>
+    <wsdl:import location="paywall.wsdl" namespace="http://lab02/"/>
+
+	<wsdl:types>
+		<xsd:schema targetNamespace="http://apolicky/nswi145/hw7/xsd">
+			<xsd:element name="orderIn">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="balanceIn" type="xsd:integer"/>
+						<xsd:element name="nrYoghsIn" type="xsd:integer"/>						
+					</xsd:sequence>					
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="orderOut">
+                <xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="balanceOut" type="xsd:integer"/>
+						<xsd:element name="reciept" type="xsd:string"/>						
+					</xsd:sequence>					
+				</xsd:complexType>
+            </xsd:element>
+		</xsd:schema>
+	</wsdl:types>
+	
+	<wsdl:message name="PayForYoghsInMessage">
+		<wsdl:part name="parameters" element="tnsxsd:orderIn"/>
+	</wsdl:message>
+	<wsdl:message name="PayForYoghsOutMessage">
+		<wsdl:part name="parameters" element="tnsxsd:orderOut"/>
+    </wsdl:message>
+    
+    <!-- PORT TYPES ++++++++++++++++++++++++++++++++++++++++ -->
+	
+	<wsdl:portType name="OrderYoghsPortType">
+		<wsdl:operation name="orderYoghsWithAccountBalance">
+			<wsdl:input name="OrderIn" message="tns:PayForYoghsInMessage"/>
+			<wsdl:output name="OrderOut" message="tns:PayForYoghsOutMessage"/>
+		</wsdl:operation>
+	</wsdl:portType>
+
+    <!-- ESHOP -->
+
+    <wsdl:portType name="TotalAmountResponsePortType">
+		<wsdl:operation name="totalAmountOperation">
+			<wsdl:input name="TotalAmountIn" message="eshop:totalAmountResponse"/>
+		</wsdl:operation>
+	</wsdl:portType>
+
+    <!-- PAYWALL -->
+
+    <wsdl:portType name="GetRecieptResponsePortType">
+		<wsdl:operation name="getRecieptOperation">
+			<wsdl:input name="GetRecieptIn" message="paywall:getRecieptResponse"/>
+		</wsdl:operation>
+	</wsdl:portType>
+    
+    <!-- SOAP BINDINGS _____________________________________________________- -->
+
+	<wsdl:binding name="OrderYoghsWithAccountBalanceSOAPBinding" type="tns:OrderYoghsPortType">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+		<wsdl:operation name="orderYoghsWithAccountBalance">
+			<soap:operation soapAction="urn:orderYoghsWithAccountBalance" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+    </wsdl:binding>
+    
+    <!-- ESHOP -->
+
+    <wsdl:binding name="TotalAmountSOAPBinding" type="tns:TotalAmountResponsePortType">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+		<wsdl:operation name="totalAmountOperation">
+			<soap:operation soapAction="urn:totalAmountResponseOperation" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+		</wsdl:operation>
+	</wsdl:binding>    
+
+    <!-- PAYWALL -->
+
+    <wsdl:binding name="GetRecieptSOAPBinding" type="tns:GetRecieptResponsePortType">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+		<wsdl:operation name="getRecieptOperation">
+			<soap:operation soapAction="urn:getRecieptResponseOperation" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+		</wsdl:operation>
+	</wsdl:binding>    
+
+    
+    <!-- PORTS _________________________________________________________ -->
+
+	<wsdl:service name="OrderYoghsService">
+		<wsdl:port name="OrderPort" binding="tns:OrderYoghsWithAccountBalanceSOAPBinding">
+			<soap:address location="http://localhost:8080/ode/processes/OrderYoghs"/>
+        </wsdl:port>
+        
+        <!-- eshop -->
+
+        <wsdl:port name="TotalAmountPort" binding="tns:TotalAmountSOAPBinding">
+			<soap:address location="http://localhost:8080/ode/processes/OrderYoghsTotalAmount"/>
+		</wsdl:port>
+
+        <!-- paywall -->
+
+        <wsdl:port name="GetRecieptPort" binding="tns:GetRecieptSOAPBinding">
+			<soap:address location="http://localhost:8080/ode/processes/OrderYoghsGetReciept"/>
+		</wsdl:port>
+
+	</wsdl:service>
+
+    <!-- LINK TYPES __________________________________________  -->
+
+
+	<plnk:partnerLinkType name="OrderYoghsLinkType">
+		<plnk:role name="OrderYoghsExecutorRole" portType="tns:OrderYoghsPortType"/>
+	</plnk:partnerLinkType>
+
+
+    <!-- ESHOP -->
+
+    <plnk:partnerLinkType name="TotalAmountLinkType">
+	  <plnk:role name="TotalAmountRole" portType="eshop:eshopImplPort" />
+	  <plnk:role name="TotalAmountClientRole" portType="tns:TotalAmountResponsePortType" />
+	</plnk:partnerLinkType>
+
+    <!-- PAYWALL -->
+
+    <plnk:partnerLinkType name="GetRecieptLinkType">
+	  <plnk:role name="GetRecieptRole" portType="paywall:paywallImplPort" />
+	  <plnk:role name="GetRecieptClientRole" portType="tns:GetRecieptResponsePortType" />
+	</plnk:partnerLinkType>
+
+</wsdl:definitions>

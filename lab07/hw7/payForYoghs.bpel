@@ -1,0 +1,344 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<process name="OrderYoghsProcess"
+    targetNamespace="http://apolicky/nswi145/hw7/bpel" 
+    xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+    xmlns:tns="http://apolicky/nswi145/hw7/bpel"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:tnswsdl="http://apolicky/nswi145/hw7/wsdl"
+    xmlns:tnsxsd="http://apolicky/nswi145/hw7/xsd"
+    xmlns:eshop="http://lab2/"
+    xmlns:paywall="http://lab2/"
+    queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath2.0"
+    expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath2.0">
+
+    <!-- xmlns:calc="http://tempuri.org/" -->
+
+    <import location="payForYoghs.wsdl"
+      namespace="http://apolicky/nswi145/hw7/wsdl"
+      importType="http://schemas.xmlsoap.org/wsdl/" />
+
+      <partnerLinks>
+        <partnerLink 
+            name="OrderYoghsLink" 
+            partnerLinkType="tnswsdl:OrderYoghsLinkType" 
+            myRole="OrderYoghsExecutorRole" />
+       <partnerLink name="TotalAmountLink"
+           partnerLinkType="tnswsdl:TotalAmountLinkType"  
+           myRole="TotalAmountClientRole" 
+           partnerRole="TotalAmountRole"/>
+        <partnerLink name="GetRecieptLink" 
+            partnerLinkType="tnswsdl:MultiplyLinkType" 
+            myRole="GetRecieptClientRole" 
+            partnerRole="GetRecieptRole"/>
+      </partnerLinks>
+
+
+
+    <variables>
+      <variable name="inputMessage" messageType="tnswsdl:PayForYoghsInMessage" />
+      <variable name="oldBalance" type="xsd:integer" />
+      <variable name="newBalance" type="xsd:integer" />
+      <variable name="nrYoghs" type="xsd:integer" />
+      <variable name="totalAmountForYoghs" type="xsd:integer" />
+      <variable name="reciept" type="xsd:string" />
+      
+
+      <variable name="totalAmountRequest" messageType="eshop:totalAmount" />
+      <variable name="totalAmountRequestElement" element="eshop:totalAmount" />
+      <variable name="totalAmountResponse" messageType="eshop:totalAmountResponse" />
+      <variable name="totalAmountResponseElement" element="eshop:totalAmountResponse" />
+
+      <variable name="recieptRequest" messageType="paywall:getReciept" />
+      <variable name="recieptRequestElement" element="paywall:getReciept" />
+      <variable name="recieptResponse" messageType="paywall:getRecieptResponse" />
+      <variable name="recieptResponseElement" element="paywall:getRecieptResponse" />
+      
+      <variable name="outputMessageElement" element="tnswsdl:orderOut" />
+      <variable name="outputMessage" messageType="tnswsdl:PayForYoghsOutMessage" />
+    </variables>
+
+
+    <sequence>
+      
+      <!-- recieve 2 numbers -->
+
+      <receive name="ReceiveBalanceAndNrYoghurts"
+        partnerLink="OrderYoghsLink"
+        portType="tnswsdl:OrderYoghsPortType"
+        operation="orderYoghsWithAccountBalance"
+        variable="inputMessage"
+        createInstance="yes" />
+
+      <!-- parse them  -->
+    
+      <assign name="ParseInput">
+        <copy>
+          <from>$inputMessage//balanceIn</from>
+          <to variable="oldBalance"/>
+        </copy>
+        <copy>
+          <from>$inputMessage//nrYoghsIn</from>
+          <to variable="nrYoghs"/>
+        </copy>
+      </assign>
+
+      <!-- udelej message s temito parametry pro totalAmount -->
+      
+      <assign name="InitTotalAmountRequest">
+        <copy>
+          <from>
+            <literal>
+              <eshop:totalAmount>
+                <eshop:total_amount></eshop:total_amount>
+              </eshop:totalAmount>
+            </literal>
+          </from>
+          <to variable="totalAmountRequestElement" />
+        </copy>
+        <copy>
+          <from>$nrYoghs</from>
+          <to>$totalAmountRequestElement/eshop:total_amount</to>
+        </copy>
+        <copy>
+          <from variable="totalAmountRequestElement"/>
+          <to variable="totalAmountRequest" part="parameters"/>
+        </copy>
+      </assign>
+      
+      <!-- suma za takovej pocet jogurtu -->
+
+      <invoke name="InvokeTotalAmount"
+        partnerLink="TotalAmountLink"
+        operation="totalAmount"
+        inputVariable="totalAmountRequest"
+        outputVariable="totalAmountResponse" />
+
+      <!-- ted prijde balance do totalAmountResponse -->
+
+      <!-- vyparsuj z ni soucet cen za jogurty -->
+
+      <assign name="ParseTotalAmountResponse">
+        <copy>
+          <from>$totalAmountResponse//total_amount</from>
+          <to variable="totalAmountForYoghs"/>
+        </copy>
+      </assign>
+
+      <!-- dokud balance < soucet za jogurty -->
+            <!-- sniz pocet jogurtu o jedna -->
+
+      <while>
+        <condition>
+          $oldBalance &lt; $totalAmountForYoghs
+        </condition>
+        <sequence>
+          <!-- decrease nr of yoghs by one -->
+          <assign>
+            <copy>
+              <from>$nrYoghs - 1</from>
+              <to variable="nrYoghs"/>
+            </copy>
+          </assign>
+
+          <!-- zeptej se na novy total amount -->
+
+          <assign name="TotalAmountRequestDecrease">
+            <copy>
+              <from>
+                <literal>
+                  <eshop:totalAmount>
+                    <eshop:total_amount></eshop:total_amount>
+                  </eshop:totalAmount>
+                </literal>
+              </from>
+              <to variable="totalAmountRequestElement" />
+            </copy>
+            <copy>
+              <from>$nrYoghs</from>
+              <to>$totalAmountRequestElement/eshop:total_amount</to>
+            </copy>
+            <copy>
+              <from variable="totalAmountRequestElement"/>
+              <to variable="totalAmountRequest" part="parameters"/>
+            </copy>
+          </assign>
+
+
+          <invoke name="InvokeTotalAmountDecrease"
+                  partnerLink="TotalAmountLink"
+                  operation="totalAmount"
+                  inputVariable="totalAmountRequest"
+                  outputVariable="totalAmountResponse" />
+
+          <assign name="ParseTotalAmountResponse">
+            <copy>
+              <from>$totalAmountResponse//total_amount</from>
+              <to variable="totalAmountForYoghs"/>
+            </copy>
+          </assign>
+    
+        </sequence>
+      </while>
+
+
+
+      <!-- if pocet jogurtu k nakoupeni je > 0 -->
+              <!-- flow -->
+                <!-- odecti od balancu cenu za ty jogutry -->
+                <!-- rekni si o reciept  -->
+              <!-- end flow -->
+      <if>
+        <invoke>
+          <flow>
+            <!-- odecti od balancu cenu za ty jogutry -->
+            <assign>
+              <copy>
+                <from>
+                  $oldBalance - $totalAmountForYoghs
+                </from>
+                <to variable="newBalance" />
+              </copy>
+            </assign>
+
+            <!-- rekni si o reciept s uspesnym nakupem -->
+            <sequence>
+
+              <assign name="GetSuccessRecieptRequest">
+                <copy>
+                  <from>
+                    <literal>
+                      <paywall:getReciept>
+                        <paywall:get_reciept></paywall:get_reciept>
+                      </paywall:getReciept>
+                    </literal>
+                  </from>
+                  <to variable="recieptReRequestElement" />
+                </copy>
+                <copy>
+                  <from>true</from>
+                  <to>$recieptRequestElement/paywall:get_reciept</to>
+                </copy>
+                <copy>
+                  <from variable="recieptRequestElement"/>
+                  <to variable="recieptRequest" part="parameters"/>
+                </copy>
+              </assign>
+
+              <invoke name="InvokeSuccessReciept"
+                  partnerLink="GetRecieptLink"
+                  operation="getReciept"
+                  inputVariable="getRecieptRequest"
+                  outputVariable="getRecieptResponse" />
+
+              <assign name="ParseSuccessRecieptResponse">
+                <copy>
+                  <from>$getRecieptResponse//get_reciept</from>
+                  <to variable="reciept"/>
+                </copy>
+              </assign>
+
+            </sequence>
+            
+          </flow>
+        </invoke>
+        <condition>$nrYoghs &gt; 0</condition>
+        <else>
+          <invoke>
+            <flow>
+
+              <assign>
+                <copy>
+                  <from>$oldBalance</from>
+                  <to variable="newBalance"/>
+                </copy>
+              </assign>
+
+              <sequence>
+                <!-- rekni si o reciept s neuspesnym nakupem -->
+  
+                <assign name="GetFailRecieptRequest">
+                  <copy>
+                    <from>
+                      <literal>
+                        <paywall:getReciept>
+                          <paywall:get_reciept></paywall:get_reciept>
+                        </paywall:getReciept>
+                      </literal>
+                    </from>
+                    <to variable="recieptRequestElement" />
+                  </copy>
+                  <copy>
+                    <from>false</from>
+                    <to>$recieptRequestElement/paywall:get_reciept</to>
+                  </copy>
+                  <copy>
+                    <from variable="recieptRequestElement"/>
+                    <to variable="recieptRequest" part="parameters"/>
+                  </copy>
+                </assign>
+  
+                <invoke name="InvokeFailReciept"
+                    partnerLink="GetRecieptLink"
+                    operation="getReciept"
+                    inputVariable="getRecieptRequest"
+                    outputVariable="getRecieptResponse" />
+  
+                <assign name="ParseFailRecieptResponse">
+                  <copy>
+                    <from>$getRecieptResponse//get_reciept</from>
+                    <to variable="reciept"/>
+                  </copy>
+                </assign>
+  
+              </sequence>
+
+            </flow>
+          </invoke>
+        </else>
+      </if>
+
+
+      <!-- vrat novy balance -->
+      <!-- vrat reciept -->
+
+      <assign>
+        <copy>
+          <from>
+            <literal>
+              <tnswsdl:orderOut>
+                <tnswsdl:balanceOut></tnswsdl:balanceOut>
+                <tnswsdl:reciept></tnswsdl:reciept>
+              </tnswsdl:orderOut>
+            </literal>
+          </from>
+          <to variable="outputMessageElement"/>
+        </copy>
+        <copy>
+          <from>$newBalance</from>
+          <to>$outputMessageElement/tnswsdl:balanceOut</to>
+        </copy>
+        <copy>
+          <from>$reciept</from>
+          <to>$outputMessageElement/tnswsdl:reciept</to>
+        </copy>
+
+        <copy>
+          <from variable="outputMessageElement"/>
+          <to variable="outputMessage" part="parameters"/>
+        </copy>
+      </assign>
+
+
+      <reply 
+          name="ReplyOrder"  
+          partnerLink="OrderYoghsLink"
+          portType="tnswsdl:OrderYoghsLinkType" 
+          operation="orderYoghsWithAccountBalance"
+          variable="outputMessage"
+      />
+
+
+    </sequence>
+
+
+</process>
