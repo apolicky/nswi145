@@ -3,7 +3,10 @@ package lab02;
 import javax.jws.WebParam;
 import javax.jws.WebResult;
 
-@javax.jws.WebService
+@javax.jws.WebService(name="PaywallSoap",
+		targetNamespace="http://apolicky.cz/nswi145/paywall",
+		serviceName="PaywallSoap",
+		portName="PaywallSoap")
 public interface paywallIfce {
 
 	@javax.jws.WebMethod
@@ -24,6 +27,8 @@ public interface paywallIfce {
 			int expir_date);
 	
 	@javax.jws.WebMethod
-	@WebResult(name="reciept_pdf")
-	public String getReciept();
+	@WebResult(targetNamespace="http://apolicky.cz/nswi145/paywall",name="reciept_pdf")
+	public String getReciept(
+			@WebParam(targetNamespace="http://apolicky.cz/nswi145/paywall",name="success")
+			boolean succ);
 }

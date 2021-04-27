@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<process name="CustomCalc"
+    targetNamespace="http://nswi145/Calc3/bpel" 
+    xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+    xmlns:tns="http://nswi145/Calc3/bpel"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:tnswsdl="http://nswi145/Calc3/wsdl"
+    xmlns:tnsxsd="http://nswi145/Calc3/xsd"
+	xmlns:calc="http://tempuri.org/"
+    queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath2.0"
+    expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath2.0">
+
+  <import location="CalcProcess.wsdl"
+      namespace="http://nswi145/Calc3/wsdl"
+      importType="http://schemas.xmlsoap.org/wsdl/" />
+
+  <partnerLinks>
+    <partnerLink name="CalculatorPartnerLink" 
+        partnerLinkType="tnswsdl:CalcLinkType" 
+        myRole="CustomCalcExecutorRole" />
+   <partnerLink name="AddLink"
+       partnerLinkType="tnswsdl:AddLinkType"  
+       myRole="AdderClientRole" 
+       partnerRole="AdderRole"/>
+    <partnerLink name="MultiplyLink" 
+        partnerLinkType="tnswsdl:MultiplyLinkType" 
+        myRole="MultiplierClientRole" 
+	partnerRole="MultiplierRole"/>
+  </partnerLinks>
+  
+  <variables>
+    <variable name="inputMessage" messageType="tnswsdl:CalcInputMessage" />
+    <variable name="inputNumberA" type="xsd:integer" />
+    <variable name="inputNumberB" type="xsd:integer" />
+    <variable name="inputNumberC" type="xsd:integer" />
+    <variable name="inputNumberD" type="xsd:integer" />
+    <variable name="inputNumberE" type="xsd:integer" />
+
+    
+    <variable name="addRequestElement" element="calc:Add" />
+    <variable name="multiRequestElement" element="calc:Multiply" />
+    
+    <variable name="addRequest" messageType="calc:AddSoapIn" />
+    <variable name="addResponse" messageType="calc:AddSoapOut" />
+    <variable name="addResponseElement" element="calc:AddResponse" />
+
+    <variable name="multiRequest" messageType="calc:MultiplySoapIn" />
+    <variable name="multiResponse" messageType="calc:MultiplySoapOut" />
+    <variable name="multiResponseElement" element="calc:MultiplyResponse" />
+
+    <variable name="outputMessage" messageType="tnswsdl:CalcOutputMessage" />
+  </variables>
+  
+  <sequence>
+  
+    <receive name="ReceiveCalcInputs"
+        partnerLink="CalculatorPartnerLink"
+        portType="tnswsdl:CalcPortType"
+        operation="calculateSomething"
+        variable="inputMessage"
+        createInstance="yes" />
+    
+    <assign name="ParseInput">
+    	<copy>
+    		<from>$inputMessage//calcInA</from>
+    		<to variable="inputNumberA"/>
+    	</copy>
+    	<copy>
+    		<from>$inputMessage//calcInB</from>
+    		<to variable="inputNumberB"/>
+    	</copy>
+    </assign>
+
+    <assign name="InitAddRequest">
+      <copy>
+        <from>
+        	<literal>
+        		<calc:Add>
+        			<calc:intA></calc:intA>
+        			<calc:intB></calc:intB>
+        		</calc:Add>
+        	</literal>
+        </from>
+        <to variable="addRequestElement" />
+      </copy>
+      <copy>
+      	<from>$inputNumberA</from>
+      	<to>$addRequestElement/calc:intA</to>
+      </copy>
+      <copy>
+      	<from>$inputNumberB</from>
+      	<to>$addRequestElement/calc:intB</to>
+      </copy>
+      <copy>
+      	<from variable="addRequestElement"/>
+      	<to variable="addRequest" part="parameters"/>
+      </copy>
+    </assign>
+    
+    <assign name="InitMultiRequest">
+      <copy>
+        <from>
+        	<literal>
+        		<calc:Multiply>
+        			<calc:intA></calc:intA>
+        			<calc:intB></calc:intB>
+        		</calc:Multiply>
+        	</literal>
+        </from>
+        <to variable="multiRequestElement" />
+      </copy>
+      <copy>
+      	<from>$inputNumberA</from>
+      	<to>$multiRequestElement/calc:intA</to>
+      </copy>
+      <copy>
+      	<from>$inputNumberB</from>
+      	<to>$multiRequestElement/calc:intB</to>
+      </copy>
+      <copy>
+      	<from variable="multiRequestElement"/>
+      	<to variable="multiRequest" part="parameters"/>
+      </copy>
+    </assign>
+
+	<invoke name="InvokeMultiplication"
+        partnerLink="MultiplyLink"
+        operation="Multiply"
+        inputVariable="multiRequest"
+        outputVariable="multiResponse" />
+
+  <invoke name="InvokeAddition"
+        partnerLink="AddLink"
+        operation="Add"
+        inputVariable="addRequest"
+        outputVariable="addResponse" />
+    
+    <assign name="ParseAddResponse">
+      <copy>
+        <from variable="addResponse" part="parameters"/>
+        <to variable="addResponseElement"/>
+      </copy>
+      <copy>
+        <from>$addResponseElement/calc:AddResult</from>
+        <to variable="inputNumberD"/>
+      </copy>
+    </assign> 
+
+    <assign name="ParseMultiResponse">
+    	<copy>
+    		<from variable="multiResponse" part="parameters"/>
+    		<to variable="multiResponseElement"/>
+    	</copy>
+    	<copy>
+    		<from>$multiResponseElement/calc:MultiplyResult</from>
+    		<to variable="inputNumberC"/>
+    	</copy>
+    </assign> 
+    
+
+    <if>
+      <invoke>
+        <!-- new add request -->
+
+        <assign name="FinalAddRequest">
+          <copy>
+            <from>
+              <literal>
+                <calc:Add>
+                  <calc:intA></calc:intA>
+                  <calc:intB></calc:intB>
+                </calc:Add>
+              </literal>
+            </from>
+            <to variable="addRequestElement" />
+          </copy>
+          <copy>
+            <from>$inputNumberC</from>
+            <to>$addRequestElement/calc:intA</to>
+          </copy>
+          <copy>
+            <from>$inputNumberD</from>
+            <to>$addRequestElement/calc:intB</to>
+          </copy>
+          <copy>
+            <from variable="addRequestElement"/>
+            <to variable="addRequest" part="parameters"/>
+          </copy>
+        </assign>
+
+        <invoke name="InvokeFinalAddition"
+        partnerLink="AddLink"
+        operation="Add"
+        inputVariable="addRequest"
+        outputVariable="addResponse" />
+
+        <assign name="ParseFinalAddResponse">
+          <copy>
+            <from variable="addResponse" part="parameters"/>
+            <to variable="addResponseElement"/>
+          </copy>
+          <copy>
+            <from>$addResponseElement/calc:AddResult</from>
+            <to variable="inputNumberE"/>
+          </copy>
+        </assign> 
+
+      </invoke>
+      <condition>$inputNumberC &lt; $inputNumberD</condition>
+      <else>
+        <invoke>
+
+        <!-- new multiply -->
+        <assign name="FinalMultiRequest">
+        <copy>
+          <from>
+            <literal>
+              <calc:Multiply>
+                <calc:intA></calc:intA>
+                <calc:intB></calc:intB>
+              </calc:Multiply>
+            </literal>
+          </from>
+          <to variable="multiRequestElement" />
+        </copy>
+        <copy>
+          <from>$inputNumberA</from>
+          <to>$multiRequestElement/calc:intA</to>
+        </copy>
+        <copy>
+          <from>$inputNumberB</from>
+          <to>$multiRequestElement/calc:intB</to>
+        </copy>
+        <copy>
+          <from variable="multiRequestElement"/>
+          <to variable="multiRequest" part="parameters"/>
+        </copy>
+        </assign>
+
+        <invoke
+        name="InvokeFinalMultiplication"
+        partnerLink="MultiplyLink"
+        operation="Multiply"
+        inputVariable="multiRequest"
+        outputVariable="multiResponse" />
+
+        <assign name="ParseFinalMultiResponse">
+          <copy>
+            <from variable="multiResponse" part="parameters"/>
+            <to variable="multiResponseElement"/>
+          </copy>
+          <copy>
+            <from>$multiResponseElement/calc:MultiplyResult</from>
+            <to variable="inputNumberE"/>
+          </copy>
+        </assign> 
+
+
+        </invoke>
+      </else>
+    </if>
+    
+    <assign name="ParseResultFromE">
+    	<copy>
+    		<from>$inputNumberE</from>
+    		<to variable="outputMessage" part="parameters"/>
+    	</copy>
+    </assign> 
+
+
+    <reply name="ReplyCalcOutputs"  
+        partnerLink="CalculatorPartnerLink"
+        portType="tnswsdl:CalcPortType" 
+        operation="calculateSomething"
+        variable="outputMessage" />
+
+  </sequence>
+  
+</process>

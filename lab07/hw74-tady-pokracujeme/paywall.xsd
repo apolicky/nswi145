@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Published by JAX-WS RI (http://jax-ws.java.net). RI's version is JAX-WS RI 2.3.2 git-revision#3d0bba4. -->
+<xs:schema xmlns:tns="http://apolicky.cz/nswi145/paywall" xmlns:xs="http://www.w3.org/2001/XMLSchema" version="1.0" targetNamespace="http://apolicky.cz/nswi145/paywall">
+
+<xs:element name="fillCredentials" type="tns:fillCredentials"/>
+
+<xs:element name="fillCredentialsResponse" type="tns:fillCredentialsResponse"/>
+
+<xs:element name="getReciept" type="tns:getReciept"/>
+
+<xs:element name="getRecieptResponse" type="tns:getRecieptResponse"/>
+
+<xs:element name="pay" type="tns:pay"/>
+
+<xs:element name="payResponse" type="tns:payResponse"/>
+
+<xs:complexType name="getReciept">
+<xs:sequence>
+<xs:element name="success" type="xs:boolean"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="getRecieptResponse">
+<xs:sequence>
+<xs:element name="reciept_pdf" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="pay">
+<xs:sequence>
+<xs:element name="account_balance" type="xs:int"/>
+<xs:element name="amount" type="xs:int"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="payResponse">
+<xs:sequence>
+<xs:element name="new_balance_OR_failed_payment" type="xs:int"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="fillCredentials">
+<xs:sequence>
+<xs:element name="card_owner" type="xs:string" minOccurs="0"/>
+<xs:element name="card_id" type="xs:int"/>
+<xs:element name="expir_date" type="xs:int"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="fillCredentialsResponse">
+<xs:sequence/>
+</xs:complexType>
+</xs:schema>

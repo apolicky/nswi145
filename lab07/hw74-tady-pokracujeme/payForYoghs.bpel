@@ -9,13 +9,9 @@
     xmlns:eshop="http://apolicky.cz/nswi145/eshop"
     xmlns:paywall="http://apolicky.cz/nswi145/paywall"
     queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath2.0"
-    expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath2.0"
-    
-    xmlns:calc="http://tempuri.org/"
+    expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath2.0">
 
-    >
-
-    
+    <!-- xmlns:calc="http://tempuri.org/" -->
 
     <import location="payForYoghs.wsdl"
       namespace="http://apolicky/nswi145/hw7/wsdl"
@@ -75,7 +71,7 @@
         variable="inputMessage"
         createInstance="yes" />
 
-        <!-- <assign>
+        <assign>
           <copy>
             <from>
               <literal>
@@ -100,13 +96,13 @@
             <from variable="outputMessageElement"/>
             <to variable="outputMessage" part="parameters"/>
           </copy>
-        </assign> -->
+        </assign>
 
 
 
       <!-- parse them  -->
     
-      <assign name="ParseInput">
+      <!-- <assign name="ParseInput">
         <copy>
           <from>$inputMessage//balanceIn</from>
           <to variable="oldBalance"/>
@@ -115,11 +111,11 @@
           <from>$inputMessage//nrYoghsIn</from>
           <to variable="nrYoghs"/>
         </copy>
-      </assign>
+      </assign> -->
 
       <!-- udelej message s temito parametry pro totalAmount -->
       
-      <assign name="InitTotalAmountRequest">
+      <!-- <assign name="InitTotalAmountRequest">
         <copy>
           <from>
             <literal>
@@ -132,52 +128,52 @@
         </copy>
         <copy>
           <from>$nrYoghs</from>
-          <to>$totalAmountRequestElement//eshop:total_amount</to>
+          <to>$totalAmountRequestElement/eshop:total_amount</to>
         </copy>
         <copy>
           <from variable="totalAmountRequestElement"/>
           <to variable="totalAmountRequest" part="parameters"/>
         </copy>
-      </assign>
+      </assign> -->
       
       <!-- suma za takovej pocet jogurtu -->
 
-      <invoke name="InvokeTotalAmount"
+      <!-- <invoke name="InvokeTotalAmount"
         partnerLink="TotalAmountLink"
         operation="totalAmount"
         inputVariable="totalAmountRequest"
-        outputVariable="totalAmountResponse" />
+        outputVariable="totalAmountResponse" /> -->
 
       <!-- ted prijde balance do totalAmountResponse -->
 
       <!-- vyparsuj z ni soucet cen za jogurty -->
 
-      <assign name="ParseTotalAmountResponse">
+      <!-- <assign name="ParseTotalAmountResponse">
         <copy>
-          <from>$totalAmountResponse//eshop:total_amount</from>
+          <from>$totalAmountResponse//total_amount</from>
           <to variable="totalAmountForYoghs"/>
         </copy>
-      </assign>
+      </assign> -->
 
       <!-- dokud balance < soucet za jogurty -->
             <!-- sniz pocet jogurtu o jedna -->
-
+<!-- 
       <while>
         <condition>
           $oldBalance &lt; $totalAmountForYoghs
         </condition>
-        <sequence>
+        <sequence> -->
           <!-- decrease nr of yoghs by one -->
-          <assign>
+          <!-- <assign>
             <copy>
               <from>$nrYoghs - 1</from>
               <to variable="nrYoghs"/>
             </copy>
-          </assign>
+          </assign> -->
 
           <!-- zeptej se na novy total amount -->
 
-          <assign name="TotalAmountRequestDecrease">
+          <!-- <assign name="TotalAmountRequestDecrease">
             <copy>
               <from>
                 <literal>
@@ -207,13 +203,13 @@
 
           <assign name="ParseTotalAmountResponse">
             <copy>
-              <from>$totalAmountResponse//eshop:total_amount</from>
+              <from>$totalAmountResponse//total_amount</from>
               <to variable="totalAmountForYoghs"/>
             </copy>
           </assign>
     
         </sequence>
-      </while>
+      </while> -->
 
 
 
@@ -222,36 +218,36 @@
                 <!-- odecti od balancu cenu za ty jogutry -->
                 <!-- rekni si o reciept  -->
               <!-- end flow -->
-      <if>
-        <condition>$nrYoghs &gt; 0</condition>
-          <flow>
+      <!-- <if>
+        <invoke>
+          <flow> -->
             <!-- odecti od balancu cenu za ty jogutry -->
-            <assign>
+            <!-- <assign>
               <copy>
                 <from>
                   $oldBalance - $totalAmountForYoghs
                 </from>
                 <to variable="newBalance" />
               </copy>
-            </assign>
+            </assign> -->
 
             <!-- rekni si o reciept s uspesnym nakupem -->
-            <sequence>
+            <!-- <sequence>
 
               <assign name="GetSuccessRecieptRequest">
                 <copy>
                   <from>
                     <literal>
                       <paywall:getReciept>
-                        <paywall:success></paywall:success>
+                        <paywall:get_reciept></paywall:get_reciept>
                       </paywall:getReciept>
                     </literal>
                   </from>
-                  <to variable="recieptRequestElement" />
+                  <to variable="recieptReRequestElement" />
                 </copy>
                 <copy>
-                  <from>true()</from>
-                  <to>$recieptRequestElement//paywall:success</to>
+                  <from>true</from>
+                  <to>$recieptRequestElement/paywall:get_reciept</to>
                 </copy>
                 <copy>
                   <from variable="recieptRequestElement"/>
@@ -262,12 +258,12 @@
               <invoke name="InvokeSuccessReciept"
                   partnerLink="GetRecieptLink"
                   operation="getReciept"
-                  inputVariable="recieptRequest"
-                  outputVariable="recieptResponse" />
+                  inputVariable="getRecieptRequest"
+                  outputVariable="getRecieptResponse" />
 
               <assign name="ParseSuccessRecieptResponse">
                 <copy>
-                  <from>$recieptResponse//paywall:reciept_pdf</from>
+                  <from>$getRecieptResponse//get_reciept</from>
                   <to variable="reciept"/>
                 </copy>
               </assign>
@@ -275,7 +271,10 @@
             </sequence>
             
           </flow>
+        </invoke>
+        <condition>$nrYoghs &gt; 0</condition>
         <else>
+          <invoke>
             <flow>
 
               <assign>
@@ -285,23 +284,23 @@
                 </copy>
               </assign>
 
-              <sequence>
+              <sequence> -->
                 <!-- rekni si o reciept s neuspesnym nakupem -->
-  
+<!--   
                 <assign name="GetFailRecieptRequest">
                   <copy>
                     <from>
                       <literal>
                         <paywall:getReciept>
-                          <paywall:success></paywall:success>
+                          <paywall:get_reciept></paywall:get_reciept>
                         </paywall:getReciept>
                       </literal>
                     </from>
                     <to variable="recieptRequestElement" />
                   </copy>
                   <copy>
-                    <from>false()</from>
-                    <to>$recieptRequestElement/paywall:success</to>
+                    <from>false</from>
+                    <to>$recieptRequestElement/paywall:get_reciept</to>
                   </copy>
                   <copy>
                     <from variable="recieptRequestElement"/>
@@ -312,12 +311,12 @@
                 <invoke name="InvokeFailReciept"
                     partnerLink="GetRecieptLink"
                     operation="getReciept"
-                    inputVariable="recieptRequest"
-                    outputVariable="recieptResponse" />
+                    inputVariable="getRecieptRequest"
+                    outputVariable="getRecieptResponse" />
   
                 <assign name="ParseFailRecieptResponse">
                   <copy>
-                    <from>$recieptResponse//paywall:reciept_pdf</from>
+                    <from>$getRecieptResponse//get_reciept</from>
                     <to variable="reciept"/>
                   </copy>
                 </assign>
@@ -325,20 +324,20 @@
               </sequence>
 
             </flow>
+          </invoke>
         </else>
-      </if>
+      </if> -->
 
 
       <!-- vrat novy balance -->
       <!-- vrat reciept -->
 
-      <assign>
+      <!-- <assign>
         <copy>
           <from>
             <literal>
               <tnswsdl:orderOut>
                 <tnswsdl:balanceOut></tnswsdl:balanceOut>
-                <tnswsdl:yoghurtsSend></tnswsdl:yoghurtsSend>
                 <tnswsdl:reciept></tnswsdl:reciept>
               </tnswsdl:orderOut>
             </literal>
@@ -347,15 +346,9 @@
         </copy>
         <copy>
           <from>$newBalance</from>
-          <!-- <from>$oldBalance</from> -->
           <to>$outputMessageElement/tnswsdl:balanceOut</to>
         </copy>
         <copy>
-          <from>$nrYoghs</from>
-          <to>$outputMessageElement/tnswsdl:yoghurtsSend</to>
-        </copy>
-        <copy>
-          <!-- <from>$totalAmountForYoghs</from> -->
           <from>$reciept</from>
           <to>$outputMessageElement/tnswsdl:reciept</to>
         </copy>
@@ -364,7 +357,7 @@
           <from variable="outputMessageElement"/>
           <to variable="outputMessage" part="parameters"/>
         </copy>
-      </assign>
+      </assign> -->
 
 
       <reply 

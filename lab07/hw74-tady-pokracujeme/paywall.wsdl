@@ -25,21 +25,21 @@
 <message name="fillCredentialsResponse">
 <part name="parameters" element="tns:fillCredentialsResponse"/>
 </message>
-<portType name="PaywallSoap">
+<portType name="paywallIfce">
 <operation name="pay">
-<input wsam:Action="http://apolicky.cz/nswi145/paywall/PaywallSoap/payRequest" message="tns:pay"/>
-<output wsam:Action="http://apolicky.cz/nswi145/paywall/PaywallSoap/payResponse" message="tns:payResponse"/>
+<input wsam:Action="http://apolicky.cz/nswi145/paywall/paywallIfce/payRequest" message="tns:pay"/>
+<output wsam:Action="http://apolicky.cz/nswi145/paywall/paywallIfce/payResponse" message="tns:payResponse"/>
 </operation>
 <operation name="getReciept">
-<input wsam:Action="http://apolicky.cz/nswi145/paywall/PaywallSoap/getRecieptRequest" message="tns:getReciept"/>
-<output wsam:Action="http://apolicky.cz/nswi145/paywall/PaywallSoap/getRecieptResponse" message="tns:getRecieptResponse"/>
+<input wsam:Action="http://apolicky.cz/nswi145/paywall/paywallIfce/getRecieptRequest" message="tns:getReciept"/>
+<output wsam:Action="http://apolicky.cz/nswi145/paywall/paywallIfce/getRecieptResponse" message="tns:getRecieptResponse"/>
 </operation>
 <operation name="fillCredentials">
-<input wsam:Action="http://apolicky.cz/nswi145/paywall/PaywallSoap/fillCredentialsRequest" message="tns:fillCredentials"/>
-<output wsam:Action="http://apolicky.cz/nswi145/paywall/PaywallSoap/fillCredentialsResponse" message="tns:fillCredentialsResponse"/>
+<input wsam:Action="http://apolicky.cz/nswi145/paywall/paywallIfce/fillCredentialsRequest" message="tns:fillCredentials"/>
+<output wsam:Action="http://apolicky.cz/nswi145/paywall/paywallIfce/fillCredentialsResponse" message="tns:fillCredentialsResponse"/>
 </operation>
 </portType>
-<binding name="PaywallSoapBinding" type="tns:PaywallSoap">
+<binding name="PaywallSoapBinding" type="tns:paywallIfce">
 <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
 <operation name="pay">
 <soap:operation soapAction=""/>

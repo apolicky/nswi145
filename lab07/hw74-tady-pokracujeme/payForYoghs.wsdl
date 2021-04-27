@@ -29,7 +29,6 @@
                 <xsd:complexType>
 					<xsd:sequence>
 						<xsd:element name="balanceOut" type="xsd:integer"/>
-						<xsd:element name="yoghurtsSend" type="xsd:integer"/>
 						<xsd:element name="reciept" type="xsd:string"/>						
 					</xsd:sequence>					
 				</xsd:complexType>
@@ -136,6 +135,7 @@
 	<plnk:partnerLinkType name="OrderYoghsLinkType">
 		<plnk:role name="OrderYoghsExecutorRole" portType="tns:OrderYoghsPortType"/>
 	</plnk:partnerLinkType>
+
 
     <!-- ESHOP -->
 

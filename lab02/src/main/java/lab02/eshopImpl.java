@@ -3,9 +3,17 @@ package lab02;
 import javax.jws.WebParam;
 import javax.jws.WebResult;
 import javax.jws.WebService;
+import javax.jws.soap.SOAPBinding;
+
 import java.util.Random;
 
-@WebService(endpointInterface = "lab02.eshopIfce")
+
+@WebService(
+		name="EshopSoap",
+		endpointInterface = "lab02.eshopIfce", 
+targetNamespace="http://apolicky.cz/nswi145/eshop",
+serviceName="EshopSoap",
+portName="EshopSoap")
 public class eshopImpl implements eshopIfce {
 
 	private int yoghurt_price = 29;
@@ -25,9 +33,11 @@ public class eshopImpl implements eshopIfce {
 		return r.nextBoolean();
 	}
 
-	@WebResult(name="total_amount")
+	@WebResult(targetNamespace="http://apolicky.cz/nswi145/eshop",
+			name="total_amount")
 	public int totalAmount(
-			@WebParam(name="total_amount")
+			@WebParam(targetNamespace="http://apolicky.cz/nswi145/eshop",
+					name="total_amount")
 			int total_count) {
 		System.out.println("totalAmountCalled, total_count: " + total_count + " yogprice: " + this.yoghurt_price);
 		System.out.println("   returning " + total_count * this.yoghurt_price);

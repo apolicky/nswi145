@@ -25,21 +25,21 @@
 <message name="addYoghurtResponse">
 <part name="parameters" element="tns:addYoghurtResponse"/>
 </message>
-<portType name="EshopSoap">
+<portType name="eshopIfce">
 <operation name="totalAmount">
-<input wsam:Action="http://apolicky.cz/nswi145/eshop/EshopSoap/totalAmountRequest" message="tns:totalAmount"/>
-<output wsam:Action="http://apolicky.cz/nswi145/eshop/EshopSoap/totalAmountResponse" message="tns:totalAmountResponse"/>
+<input wsam:Action="http://apolicky.cz/nswi145/eshop/eshopIfce/totalAmountRequest" message="tns:totalAmount"/>
+<output wsam:Action="http://apolicky.cz/nswi145/eshop/eshopIfce/totalAmountResponse" message="tns:totalAmountResponse"/>
 </operation>
 <operation name="cancelOrder">
-<input wsam:Action="http://apolicky.cz/nswi145/eshop/EshopSoap/cancelOrderRequest" message="tns:cancelOrder"/>
-<output wsam:Action="http://apolicky.cz/nswi145/eshop/EshopSoap/cancelOrderResponse" message="tns:cancelOrderResponse"/>
+<input wsam:Action="http://apolicky.cz/nswi145/eshop/eshopIfce/cancelOrderRequest" message="tns:cancelOrder"/>
+<output wsam:Action="http://apolicky.cz/nswi145/eshop/eshopIfce/cancelOrderResponse" message="tns:cancelOrderResponse"/>
 </operation>
 <operation name="addYoghurt">
-<input wsam:Action="http://apolicky.cz/nswi145/eshop/EshopSoap/addYoghurtRequest" message="tns:addYoghurt"/>
-<output wsam:Action="http://apolicky.cz/nswi145/eshop/EshopSoap/addYoghurtResponse" message="tns:addYoghurtResponse"/>
+<input wsam:Action="http://apolicky.cz/nswi145/eshop/eshopIfce/addYoghurtRequest" message="tns:addYoghurt"/>
+<output wsam:Action="http://apolicky.cz/nswi145/eshop/eshopIfce/addYoghurtResponse" message="tns:addYoghurtResponse"/>
 </operation>
 </portType>
-<binding name="EshopSoapBinding" type="tns:EshopSoap">
+<binding name="EshopSoapBinding" type="tns:eshopIfce">
 <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
 <operation name="totalAmount">
 <soap:operation soapAction=""/>

@@ -4,7 +4,11 @@ import javax.jws.WebService;
 import javax.jws.WebResult;
 import javax.jws.WebParam;
 
-@WebService(endpointInterface = "lab02.paywallIfce")
+@WebService(name="PaywallSoap",
+		endpointInterface = "lab02.paywallIfce",
+targetNamespace="http://apolicky.cz/nswi145/paywall",
+serviceName="PaywallSoap",
+portName="PaywallSoap")
 public class paywallImpl implements paywallIfce {
 
 	/**
@@ -28,13 +32,20 @@ public class paywallImpl implements paywallIfce {
 	
 	}
 
-	@WebResult(name="reciept_pdf")
-	public String getReciept() {
-		System.out.println("getReciptCalled");
-		System.out.println("   returning " + "somthing");
-		return "Payment details: XY\n"
-				+ "dnk asdfk ZY\n"
-				+ "Best regards, Yoghurt inc.";
+	@WebResult(targetNamespace="http://apolicky.cz/nswi145/paywall",name="reciept_pdf")
+	public String getReciept(
+			@WebParam(targetNamespace="http://apolicky.cz/nswi145/paywall",name="success")
+			boolean succ) {
+		System.out.println("Recieved: " + succ);
+		return succ ? "Payment details:\n"
+				+ "you just bought some great yoghurts\n"
+				+ "Best regards, Yoghurt inc." 
+				
+				:
+					
+				"Payment details:\n" +
+				"you did not have enough money to buy great yoghurts.\n" +
+				"Best regards, Yoghurt inc.";
 	}
 
 	public void fillCredentials(

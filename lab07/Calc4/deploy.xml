@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<deploy 
+    xmlns="http://www.apache.org/ode/schemas/dd/2007/03"
+    xmlns:tnsbpel="http://nswi145/Calc4/bpel"
+    xmlns:tnswsdl="http://nswi145/Calc4/wsdl"
+	xmlns:calc="http://tempuri.org/"
+	>
+
+  <process name="tnsbpel:CustomCalc">
+    <active>true</active>
+    <provide partnerLink="CalculatorPartnerLink">
+      <service name="tnswsdl:CustomCalcService4" port="CalcPort4" />
+    </provide>
+    <invoke partnerLink="AddLink">
+      <service name="calc:Calculator" port="CalculatorSoap" />
+	</invoke>
+    
+    <invoke partnerLink="MultiplyLink">
+      <service name="calc:Calculator" port="CalculatorSoap" />
+	</invoke>
+    
+    <provide partnerLink="AddLink">
+      <service name="tnswsdl:CustomCalcService4" port="AddPort4" />
+    </provide>
+    <provide partnerLink="MultiplyLink">
+      <service name="tnswsdl:CustomCalcService4" port="MultPort4" />
+    </provide>
+	
+  </process>
+
+</deploy>
