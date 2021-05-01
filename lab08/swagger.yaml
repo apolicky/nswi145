@@ -1,0 +1,98 @@
+swagger: "2.0"
+info:
+  description: "lab08t04"
+  version: "1.0.0"
+  title: "Contact list"
+host: "localhost:8080"
+basePath: "/lab08/hw8"
+tags:
+- name: "eshop"
+  description: "Yoghurt eshop"
+  externalDocs:
+    description: "Great yoghurt eshop"
+    url: "http://localhost:8080"
+schemes:
+- "http"
+paths:
+  /eshop:
+    get:
+      tags:
+      - "eshop"
+      summary: "Shows shopping cart"
+      operationId: "showCart"
+      produces:
+      - "application/xml"
+      - "application/json"
+      responses:
+        "200":
+          description: "All ok"
+          
+  /eshop/totalAmount:
+    get:
+      tags:
+      - "eshop"
+      operationId: "computeTotalAmount"
+      produces:
+      - "text"
+      responses:
+        "200":
+          description: "All ok"
+        
+        
+  /eshop/cancel:
+    get:
+      tags:
+      - "eshop"
+      operationId: "cancelsOrder"
+      produces:
+      - "text"
+      responses:
+        "200":
+          description: "All ok"
+          
+  /eshop/{count}:
+    put:
+      tags:
+      - "eshop"
+      operationId: "addSomeYoghs"
+      parameters:
+      - name: count
+        type: number
+        in: path
+        required: true
+      - in: body
+        name: yoghurtOrder
+        description: "dlflhdsklshf"
+        schema: 
+          type: object
+          properties:
+            count:
+              type: number
+            flavorID:
+              type: number
+          xml:
+            name: yoghurtOrder
+        
+              
+      consumes:
+      - "application/xml"
+      - "application/json"
+      # produces:
+      # - "text"
+      responses:
+        "201":
+          description: "All ok"
+        "406":
+          description: "Count not corresponding to yoghurt otder"
+          
+# components:
+#   schemas:
+#     yoghurtOrder:
+#       type: object
+#       properties:
+#         flavorID: 
+#           type: number
+#         count:
+#           type: number
+
+
