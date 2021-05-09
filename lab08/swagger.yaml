@@ -27,6 +27,16 @@ paths:
         "200":
           description: "All ok"
           
+    delete:
+      tags:
+      - "eshop"
+      operationId: "cancelsOrder"
+      produces:
+      - "text"
+      responses:
+        "200":
+          description: "All ok"
+          
   /eshop/totalAmount:
     get:
       tags:
@@ -37,18 +47,34 @@ paths:
       responses:
         "200":
           description: "All ok"
-        
-        
-  /eshop/cancel:
-    get:
+          
+  /eshop/customer:
+    post:
       tags:
       - "eshop"
-      operationId: "cancelsOrder"
+      operationId: "changeCustomer"
+      consumes:
+      - "application/xml"
+      - "application/json"
       produces:
       - "text"
+      parameters:
+      - in: body
+        name: customer
+        description: "changes customers details"
+        schema: 
+          type: object
+          properties:
+            name:
+              type: string
+            address:
+              type: string
+          xml:
+            name: customer
       responses:
-        "200":
+        "201":
           description: "All ok"
+      
           
   /eshop/{count}:
     put:
@@ -85,14 +111,5 @@ paths:
         "406":
           description: "Count not corresponding to yoghurt otder"
           
-# components:
-#   schemas:
-#     yoghurtOrder:
-#       type: object
-#       properties:
-#         flavorID: 
-#           type: number
-#         count:
-#           type: number
 
 

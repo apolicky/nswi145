@@ -1,6 +1,7 @@
 package hw8;
 
 import java.util.*;
+import javafx.util.*;
 
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.*;
@@ -13,13 +14,12 @@ public class EshopResource {
 	@Context
 	UriInfo uriinfo;
 	
+	private static int i = 0;
 	private static Order o = new Order();
+	private static Customer c = new Customer();
 	
-	public EshopResource() {
-//		o.addYoghurt(8);
-//		o.addYoghurt(7);
-//		o.addYoghurt(8);
-	}
+	public EshopResource() {}
+			
 	
 	@PUT
 	@Consumes(MediaType.APPLICATION_XML)
@@ -58,9 +58,8 @@ public class EshopResource {
 	
 	@GET
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-	public List<Yoghurt> cart() {
-		System.out.println("cart");
-		return o.getYoghurts();
+	public Summary cart() {
+		return new Summary(c,o.getYoghurts());
 	}
 	
 	@GET
@@ -75,14 +74,28 @@ public class EshopResource {
 		return i;
 	}
 	
-	@GET
+	@DELETE
     @Produces(MediaType.TEXT_PLAIN)
-    @Path("/cancel")
 	public Response cancelOrder() {
+		System.out.println("cancel called");
 		o = new Order();
 		Response r;
 		r = Response.status(Response.Status.OK).entity("Order canceled").build();
 		return r;
 	}
+	
+	@POST
+	@Consumes(MediaType.APPLICATION_XML)
+	@Produces(MediaType.TEXT_PLAIN)
+	@Path("/customer")
+	public Response setCustomer(
+			JAXBElement<Customer> cust) {
+		Customer cstr = cust.getValue();
+		this.c = cstr; 
+		Response r = Response.status(Response.Status.OK).entity("Customer changed to " + this.c.getName()).build();
+		return r;
+		
+	}
+	
 
 }
