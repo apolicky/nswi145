@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+@prefix ye: <http://apolicky.cz/nswi145/yoghurtEshop> .
+@prefix pw: <http://apolicky.cz/nswi145/yoghurtPaywall> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix rel: <http://purl.org/dc/terms/relation>
+@prefix food: <http://data.lirmm.fr/ontologies/food>
+@prefix schema: <http://schema.org/>
+
+ye:Yoghurt  rdf:type rdfs:Class ;
+            rdfs:comment "A tasteful dish made of milk with a creamy structure" ;
+            rdfs:subClassOf food:food .
+
+ye:flavor   rdf:type rdf:Property ;
+            rdf:range ye:Flavor ;
+            rdfs:subPropertyOf rel:relation ;
+            rdfs:comment "Something has a flavor" .
+
+ye:customer rdf:type rdf:Property ;
+            rdf:range foaf:Person .
+
+ye:Flavor   rdf:type rdfs:Class ;
+            rdfs:comment "Something that gives food a different taste" .
+
+pw:Paywall  rdf:type rdfs:Class ;
+            rdfs:comment "Something used to pay for stuff online." .
+
+pw:chargeMoney  rdf:type rdf:Property ;
+                rdfs:subPropertyOf schema:Action ;
+                rdfs:comment "An action when money is charged from an account during a transaction." .
+
+pw:isPaidIn rdf:type rdf:Property ;
+            rdfs:subPropertyOf rel:relation ;
+            rdfs:comment "Something is paid for in some way" .

@@ -1,0 +1,16 @@
+<https://apolicky.cz/adam> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://xmlns.com/foaf/0.1/Person> .
+<https://apolicky.cz/adam> <http://xmlns.com/foaf/0.1/givenName> "Adam"@cs.
+<https://apolicky.cz/adam> <http://xmlns.com/foaf/0.1/familyName> "Polický"@cs .
+<https://apolicky.cz/adam> <http://xmlns.com/foaf/0.1/schoolHomepage> <https://cuni.cz/> .
+<https://apolicky.cz/adam> <http://xmlns.com/foaf/0.1/homepage> <https://apolicky.cz/> .
+<https://apolicky.cz/adam> <http://xmlns.com/foaf/0.1/interest> "Running" .
+<https://apolicky.cz/adam> <http://xmlns.com/foaf/0.1/interest> "Cycling" .
+<https://apolicky.cz/adam> <http://xmlns.com/foaf/0.1/interest> "Spinning" .
+
+<https://apolicky.cz/> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://xmlns.com/foaf/0.1/Document> .
+<https://apolicky.cz/> <http://xmlns.com/foaf/0.1/name> "Homepage of Adam Policky"@en .
+
+<https://cuni.cz/> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://xmlns.com/foaf/0.1/Document> .
+<https://cuni.cz/> <http://xmlns.com/foaf/0.1/name> "Charles university"@en .
+
+

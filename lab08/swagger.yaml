@@ -14,75 +14,63 @@ tags:
 schemes:
 - "http"
 paths:
-  /eshop:
+  /eshop/total-amount/{id}:
     get:
       tags:
       - "eshop"
-      summary: "Shows shopping cart"
+      summary: "Shows total amount for order with id from path"
+      operationId: "totalAmount"
+      parameters:
+      - name: id
+        type: number
+        in: path
+        required: true
+      produces:
+      - "text"
+      responses:
+        "200":
+          description: "All ok"
+          
+  /eshop/shopping-cart/{id}:
+    get:
+      tags:
+      - "eshop"
+      summary: "Show all yoghurts for order with id from path"
       operationId: "showCart"
       produces:
       - "application/xml"
       - "application/json"
+      parameters:
+      - name: id
+        type: number
+        in: path
+        required: true
       responses:
         "200":
-          description: "All ok"
-          
+          description: "Cart shown"
     delete:
       tags:
       - "eshop"
-      operationId: "cancelsOrder"
-      produces:
-      - "text"
-      responses:
-        "200":
-          description: "All ok"
-          
-  /eshop/totalAmount:
-    get:
-      tags:
-      - "eshop"
-      operationId: "computeTotalAmount"
-      produces:
-      - "text"
-      responses:
-        "200":
-          description: "All ok"
-          
-  /eshop/customer:
-    post:
-      tags:
-      - "eshop"
-      operationId: "changeCustomer"
-      consumes:
-      - "application/xml"
-      - "application/json"
+      summary: "Deletes order with id from path"
+      operationId: "deleteOrder"
       produces:
       - "text"
       parameters:
-      - in: body
-        name: customer
-        description: "changes customers details"
-        schema: 
-          type: object
-          properties:
-            name:
-              type: string
-            address:
-              type: string
-          xml:
-            name: customer
+      - name: id
+        type: number
+        in: path
+        required: true
       responses:
-        "201":
-          description: "All ok"
+        "200":
+          description: "Order deleted"
       
-          
-  /eshop/{count}:
-    put:
+  /eshop/shopping-cart/{id}/add:
+    post:
       tags:
       - "eshop"
       operationId: "addSomeYoghs"
       parameters:
-      - name: count
+      - name: id
         type: number
         in: path
         required: true
@@ -98,18 +86,71 @@ paths:
               type: number
           xml:
             name: yoghurtOrder
-        
-              
       consumes:
       - "application/xml"
       - "application/json"
-      # produces:
-      # - "text"
+      responses:
+        "200":
+          description: "Yoghurts added to cart"
+        "400":
+          description: "Invalid order id"
+        "404":
+          description: "Unknown order id, create new order by calling /eshop/customer"
+      
+          
+  /eshop/customer:
+    put:
+      tags:
+      - "eshop"
+      operationId: "newCustomer"
+      consumes:
+      - "application/xml"
+      - "application/json"
+      summary: "After sending customer credentials returns the id of an order that is used while shopping."
+      produces:
+      - "text"
+      parameters:
+      - in: body
+        name: customer
+        description: "address and name of new customer"
+        schema: 
+          type: object
+          properties:
+            name:
+              type: string
+            address:
+              type: string
+          xml:
+            name: customer
       responses:
         "201":
-          description: "All ok"
-        "406":
-          description: "Count not corresponding to yoghurt otder"
+          description: "Customer added"
+      
+          
+  # /eshop/{count}:
+  #   put:
+  #     tags:
+  #     - "eshop"
+  #     operationId: "addSomeYoghs"
+  #     parameters:
+  #     - name: count
+  #       type: number
+  #       in: path
+  #       required: true
+  #     - in: body
+  #       name: yoghurtOrder
+  #       description: "dlflhdsklshf"
+  #       schema: 
+  #         type: object
+  #         properties:
+  #           count:
+  #             type: number
+  #           flavorID:
+  #             type: number
+  #         xml:
+  #           name: yoghurtOrder
+        
+            
           
 
 

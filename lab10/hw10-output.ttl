@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+@prefix ye: <http://apolicky.cz/nswi145/yoghurtEshop> .
+@prefix pay: <http://reference.data.gov.uk/def/payment> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix schema: <http://schema.org/> .
+@prefix ebucore: <https://www.ebu.ch/metadata/ontologies/ebucore/ebucore> .
+@prefix osspr: <http://data.ordnancesurvey.co.uk/ontology/spatialrelations/> .
+
+# total-amount
+pay:Order schema:amount schema:Number .
+
+# cancel
+# nema output
+
+# shopping-cart
+pay:Order osspr:contains ye:Yoghurt .
+pay:Order ye:customer foaf:Person .
+
+# add-yoghurt
+# nema output
+
+# Delete
+# nema output
