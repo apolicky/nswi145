@@ -1,24 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-@prefix ye: <http://apolicky.cz/nswi145/yoghurtEshop> .
+@prefix ye: <http://apolicky.cz/nswi145/yoghurtEshop/> .
 @prefix pay: <http://reference.data.gov.uk/def/payment> .
 @prefix foaf: <http://xmlns.com/foaf/0.1/> .
 @prefix schema: <http://schema.org/> .
 @prefix ebucore: <https://www.ebu.ch/metadata/ontologies/ebucore/ebucore> .
 @prefix osspr: <http://data.ordnancesurvey.co.uk/ontology/spatialrelations/> .
 
-# total-amount
-pay:Order schema:amount schema:Number .
+# We have a customer,
+ye:CustomerInstance a foaf:Person ;
+                    foaf:name "Tony Macaroni"@en .
+# an eshop
+ye:YoghurtEshopInstance a ye:YoghurtEshop . 
 
-# cancel
-# nema output
+# and its owner.
+ye:EshopOwnerInstance a foaf:Person ;
+                    foaf:name "Atilla Tortilla"@en .
+ye:EshopOwnerInstance dbpedia:owns ye:YoghurtEshopInstance .
+ye:YoghurtEshopInstance frbr:owner ye:EshopOwnerInstance .
 
-# shopping-cart
-pay:Order osspr:contains ye:Yoghurt .
-pay:Order ye:customer foaf:Person .
+# The customer creates an order in the eshop
+ye:OrderInstance a pay:Order .
+ye:OrderInstance ye:customer ye:CustomerInstance .
+ye:CustomerInstance nlon:create ye:OrderInstance .
 
-# add-yoghurt
-# nema output
+# The order contains some yoghurts
+ye:ChocolateFlavorInstance  a ye:Flavor ;
+                            rdfs:comment "Gives the food the taste of chocolate"@en .
 
-# Delete
-# nema output
+ye:StrawberryFlavorInstance a ye:Flavor ;
+                            rdfs:comment "Gives the food the taste of strawberry"@en .
+
+ye:ChocolateYoghurtInstance a ye:Yoghurt ;
+                            ye:flavor ye:ChocolateFlavorInstance .
+
+ye:StrawberryYoghurtInstance    a ye:Yoghurt ;
+                                ye:flavor ye:StrawberryFlavorInstance .
+
+ye:OrderInstance    osspr:contains ye:StrawberryYoghurtInstance ;
+                    osspr:contains ye:ChocolateYoghurtInstance .
+
+# The order costs some money
+ye:OrderInstance schema:price "58.0".

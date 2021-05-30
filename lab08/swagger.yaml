@@ -64,11 +64,11 @@ paths:
         "200":
           description: "Order deleted"
       
-  /eshop/shopping-cart/{id}/add:
     post:
       tags:
       - "eshop"
       operationId: "addSomeYoghs"
+      summary: "Add some yoghurts of a single flavor to shopping cart."
       parameters:
       - name: id
         type: number
@@ -76,7 +76,7 @@ paths:
         required: true
       - in: body
         name: yoghurtOrder
-        description: "dlflhdsklshf"
+        description: "Specify the number and the flavor of yoghurts you want to add to cart."
         schema: 
           type: object
           properties:

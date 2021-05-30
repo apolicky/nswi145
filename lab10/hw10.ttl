@@ -1,33 +1,58 @@
 <?xml version="1.0" encoding="UTF-8"?>
-@prefix ye: <http://apolicky.cz/nswi145/yoghurtEshop> .
-@prefix pw: <http://apolicky.cz/nswi145/yoghurtPaywall> .
+@prefix ye: <http://apolicky.cz/nswi145/yoghurtEshop/> .
+@prefix pw: <http://apolicky.cz/nswi145/yoghurtPaywall/> .
 @prefix foaf: <http://xmlns.com/foaf/0.1/> .
 @prefix rel: <http://purl.org/dc/terms/relation>
 @prefix food: <http://data.lirmm.fr/ontologies/food>
 @prefix schema: <http://schema.org/>
+@prefix lgdo: <http://linkedgeodata.org/ontology/>
 
 ye:Yoghurt  rdf:type rdfs:Class ;
-            rdfs:comment "A tasteful dish made of milk with a creamy structure" ;
+            rdfs:comment "A tasteful dish made of milk with a creamy structure"@en ;
             rdfs:subClassOf food:food .
+
+ye:YoghurtEshop rdf:type rdfs:Class;
+                rdf:subClassOf lgdo:Shop;
+                rdfs:comment "Specialized type of shop to sell yoghurts"@en .
 
 ye:flavor   rdf:type rdf:Property ;
             rdf:range ye:Flavor ;
             rdfs:subPropertyOf rel:relation ;
-            rdfs:comment "Something has a flavor" .
+            rdfs:comment "Something has a flavor"@en .
 
 ye:customer rdf:type rdf:Property ;
             rdf:range foaf:Person .
 
 ye:Flavor   rdf:type rdfs:Class ;
-            rdfs:comment "Something that gives food a different taste" .
+            rdfs:comment "Something that gives food a different taste"@en .
+
+ye:shopsAt  rdf:type rdf:Property;
+            rdf:range ye:YoghurtEshop;
+            rdfs:comment "Relation binding a customer to shop"@en .
 
 pw:Paywall  rdf:type rdfs:Class ;
-            rdfs:comment "Something used to pay for stuff online." .
+            rdfs:comment "Something used to pay for stuff online"@en .
+
+pw:usedToPayAt  rdf:type rdf:Property;
+                rdf:range pw:Paywall;
+                rdf:domain foaf:Account;
+                rdfs:comment "Relation binding an account with paywall in pay transaction"@en . 
+
+pw:usedToPay    rdf:type rdf:Property;
+                rdf:range pay:Order;
+                rdf:domain pw:Paywall;
+                rdfs:comment "Relation binding a paywall with an order in pay transaction"@en .
+
+pw:payedFrom    rdf:type rdf:Property;
+                rdf:range pw:Paywall;
+                rdfs:comment "Relation binding an order with a paywall, inverse to pw:usedToPay"@en .
+
+
 
 pw:chargeMoney  rdf:type rdf:Property ;
                 rdfs:subPropertyOf schema:Action ;
-                rdfs:comment "An action when money is charged from an account during a transaction." .
+                rdfs:comment "An action when money is charged from an account during a transaction"@en .
 
 pw:isPaidIn rdf:type rdf:Property ;
             rdfs:subPropertyOf rel:relation ;
-            rdfs:comment "Something is paid for in some way" .
+            rdfs:comment "Something is paid for in some way"@en .

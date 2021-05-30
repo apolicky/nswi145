@@ -26,7 +26,7 @@ public class EshopResource {
 	@POST
 	@Consumes(MediaType.APPLICATION_XML)
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-	@Path("/shopping-cart/{id}/add")
+	@Path("/shopping-cart/{id}")
 //	@Path("/shopping-cart/{id}/add/{count}")	
 	public Response addYoghurt(
 			@PathParam("id") String orderId,
